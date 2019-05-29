@@ -47,12 +47,19 @@
 #define BP_HID_COMBO  			"SH,0230\r\n"
 
 // KEYBOARD Scan Codes
-#define	BP_KEY_ENTER		0x28	//Enter
+#define BP_KEY_HOME 0x4a // Keyboard Home
+#define BP_KEY_PAGEUP 0x4b // Keyboard Page Up
+#define BP_KEY_DELETE 0x4c // Keyboard Delete Forward
+#define BP_KEY_END 0x4d // Keyboard End
+#define BP_KEY_PAGEDOWN 0x4e // Keyboard Page Down
+#define	BP_KEY_RIGHT_ARROW	0x4f	//Right arrow
 #define	BP_KEY_LEFT_ARROW	0x50	//Left arrow
 #define	BP_KEY_DOWN_ARROW	0x51	//Down arrow
 #define	BP_KEY_ENTER		0x28	//Enter
 #define	BP_KEY_UP_ARROW		0x52	//Up arrow
 #define	BP_KEY_ESCAPE		0x29	//Escape
+#define BP_KEY_BACKSPACE 0x2a //Backspace
+#define BP_KEY_TAB 0x2b //Tab
 #define	BP_KEY_CAPSLOCK		0x39	//CapsLock
 #define	BP_KEY_SCROLLLOCK	0x47	//ScrollLock
 #define	BP_KEY_BREAK_PAUSE	0x48	//Break-pause
