@@ -144,6 +144,8 @@ public:
   //Keyboard
   void keyboardPrint(char BP_MSG[]);
   void keyboardPress(byte BP_KEY,byte BP_MOD);
+  //Sends a raw hid report with up to 6 key presses
+  void keyboardPressMulti(byte BP_KEYS[6],byte BP_MOD);
   void keyboardReleaseAll();
   // Mouse
   void mouseClick(byte BP_BUTTON);

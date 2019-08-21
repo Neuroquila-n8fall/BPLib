@@ -105,6 +105,17 @@ void BPLib::keyboardPress(byte BP_KEY, byte BP_MOD) {
 
 }
 
+void BPLib::keyboardPressMulti(byte BP_KEYS[6], byte BP_MOD) {
+  serialInterface->write((byte)0xFD); //Start HID Report
+  serialInterface->write((byte)0x9); //Length byte
+  serialInterface->write((byte)0x1); //Descriptor byte
+  serialInterface->write(BP_MOD); //Modifier byte
+  serialInterface->write((byte)0x00); //-
+  for (byte i = 0; i < 6; i++) { //Send array of all keys to press
+    serialInterface->write(BP_KEYS[i]);
+  }
+}
+
 void BPLib::keyboardReleaseAll() {
   keyboardPress((byte)0x00, BP_MOD_NOMOD);
 }
