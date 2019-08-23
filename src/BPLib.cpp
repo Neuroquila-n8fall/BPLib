@@ -394,3 +394,5 @@ void BPLib_::removeKeyPress(byte BP_KEY)
     _keyReport.keys[keyPosition] = BP_KEY_NONE;
   }
 }
+
+BPLib_ BPLib;
