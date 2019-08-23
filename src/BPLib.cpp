@@ -154,7 +154,7 @@ void BPLib::keyboardRelease(byte BP_KEY, byte BP_MOD)
   }
 }
 
-void BPLib::keyboardPressSingle(byte BP_KEY, byte BP_MOD)
+void BPLib::keyboardPressOnce(byte BP_KEY, byte BP_MOD)
 {
   keyboardPress(BP_KEY, BP_MOD);
   keyboardRelease(BP_KEY, BP_MOD);
