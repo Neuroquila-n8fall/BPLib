@@ -85,9 +85,21 @@
 #define	BP_KEY_F10	0x43	//F10
 #define	BP_KEY_F11	0x44	//F11
 #define	BP_KEY_F12	0x45	//F12
+#define BP_KEY_F13  0x68  //F13
+#define BP_KEY_F14  0x69  //F14
+#define BP_KEY_F15  0x6A  //F15
+#define BP_KEY_F16  0x6B  //F16
+#define BP_KEY_F17  0x6C  //F17
+#define BP_KEY_F18  0x6D  //F18
+#define BP_KEY_F19  0x6E  //F19
+#define BP_KEY_F20  0x6F  //F20
+#define BP_KEY_F21  0x70  //F21
+#define BP_KEY_F22  0x71  //F22
+#define BP_KEY_F23  0x72  //F23
+#define BP_KEY_F24  0x73  //F24
 
 
-//KEYBOARD MODEFIER CODES
+//KEYBOARD MODIFIER CODES
 #define BP_MOD_RIGHT_GUI	(1<<7)
 #define BP_MOD_RIGHT_ALT	(1<<6)
 #define BP_MOD_RIGHT_SHIFT	(1<<5)
