@@ -47,6 +47,7 @@
 #define BP_HID_COMBO  			"SH,0230\r\n"
 
 // KEYBOARD Scan Codes
+#define BP_KEY_NONE 0x00 // No Key
 #define BP_KEY_HOME 0x4a // Keyboard Home
 #define BP_KEY_PAGEUP 0x4b // Keyboard Page Up
 #define BP_KEY_DELETE 0x4c // Keyboard Delete Forward
@@ -138,11 +139,17 @@
 #define BP_GAMEJOY_ND_BTN7	(1<<7)
 #define BP_GAMEJOY_ND_NOBTN	0x00
 
+//Holds the currently pressed keys as a ready-made keyreport
+typedef struct
+{
+  uint8_t mods;     //Modifier bitmap
+  uint8_t keys[6];  //Key array
+} KeyReport;
 
-class BPLib
+class BPLib_
 {
 public:
-  BPLib(Stream &port, int pin = -1);
+  BPLib_(Stream &port, int pin = -1);
   byte begin(char BP_Mode[], char BP_Type[]);
   byte sendCmd(char BP_CMD[]);
   void sendByte(byte rawData);
@@ -155,9 +162,11 @@ public:
   int available();
   //Keyboard
   void keyboardPrint(char BP_MSG[]);
+  //Press a specific key
   void keyboardPress(byte BP_KEY,byte BP_MOD);
-  //Sends a raw hid report with up to 6 key presses
-  void keyboardPressMulti(byte BP_KEYS[6],byte BP_MOD);
+  //Release a specific key
+  void keyboardRelease(byte BP_KEY,byte BP_MOD);
+  //Release all keys
   void keyboardReleaseAll();
   // Mouse
   void mouseClick(byte BP_BUTTON);
@@ -187,5 +196,15 @@ private:
   Stream *serialInterface;
   int statusPin;
   byte get(char BP_STAT[], byte strlen);
+  //Keyreport that holds all keys and modifiers
+  KeyReport _keyReport;
+  //Check if key is already pressed. 
+  //Returns array position if yes or -1 if not pressed.
+  int isKeyPressed(byte BP_KEY); 
+  //Add key to keyreport
+  void addKeyPress(byte BP_KEY);  
+  //Remove key from keyreport
+  void removeKeyPress(byte BP_KEY);
 };
+extern BPLib_ BPLib;
 #endif
