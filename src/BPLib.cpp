@@ -165,7 +165,7 @@ void BPLib::keyboardReleaseAll()
   serialInterface->write((byte)0xFD);   //Start HID Report
   serialInterface->write((byte)0x9);    //Length byte
   serialInterface->write((byte)0x1);    //Descriptor byte
-  serialInterface->write((byte)0x00));  //Modifier byte
+  serialInterface->write((byte)0x00);  //Modifier byte
   serialInterface->write((byte)0x00);   //Empty
   //Zero out ever key
   for (int i = 0; i < 6; i++)
