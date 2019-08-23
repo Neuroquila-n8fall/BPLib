@@ -154,9 +154,24 @@ void BPLib::keyboardRelease(byte BP_KEY, byte BP_MOD)
   }
 }
 
+void BPLib::keyboardPressSingle(byte BP_KEY, byte BP_MOD)
+{
+  keyboardPress(BP_KEY, BP_MOD);
+  keyboardRelease(BP_KEY, BP_MOD);
+}
+
 void BPLib::keyboardReleaseAll()
 {
-  keyboardPress((byte)0x00, BP_MOD_NOMOD);
+  serialInterface->write((byte)0xFD);   //Start HID Report
+  serialInterface->write((byte)0x9);    //Length byte
+  serialInterface->write((byte)0x1);    //Descriptor byte
+  serialInterface->write((byte)0x00));  //Modifier byte
+  serialInterface->write((byte)0x00);   //Empty
+  //Zero out ever key
+  for (int i = 0; i < 6; i++)
+  {
+    serialInterface->write((byte)0x00));
+  }
 }
 
 void BPLib::mouseClick(byte BP_BUTTON)
@@ -394,4 +409,3 @@ void BPLib::removeKeyPress(byte BP_KEY)
     _keyReport.keys[keyPosition] = BP_KEY_NONE;
   }
 }
-

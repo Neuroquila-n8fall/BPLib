@@ -168,6 +168,9 @@ public:
   void keyboardRelease(byte BP_KEY,byte BP_MOD);
   //Release all keys
   void keyboardReleaseAll();
+  //Press a key and release it immediately
+  void keyboardPressSingle(byte BP_KEY, byte BP_MOD);
+  
   // Mouse
   void mouseClick(byte BP_BUTTON);
   void mouseMove(signed int BP_X,signed int BP_Y);
