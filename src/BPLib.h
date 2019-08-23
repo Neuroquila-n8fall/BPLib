@@ -146,10 +146,10 @@ typedef struct
   uint8_t keys[6];  //Key array
 } KeyReport;
 
-class BPLib_
+class BPLib
 {
 public:
-  BPLib_(Stream &port, int pin = -1);
+  BPLib(Stream &port, int pin = -1);
   byte begin(char BP_Mode[], char BP_Type[]);
   byte sendCmd(char BP_CMD[]);
   void sendByte(byte rawData);
@@ -206,5 +206,5 @@ private:
   //Remove key from keyreport
   void removeKeyPress(byte BP_KEY);
 };
-extern BPLib_ BPLib;
+
 #endif

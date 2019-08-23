@@ -15,7 +15,7 @@
 #include "Arduino.h"
 #include "BPLib.h"
 
-BPLib_::BPLib_(Stream &port, int pin)
+BPLib::BPLib(Stream &port, int pin)
 {
   this->serialInterface = &port;
   if (pin > -1)
@@ -24,7 +24,7 @@ BPLib_::BPLib_(Stream &port, int pin)
   }
 }
 
-byte BPLib_::begin(char BP_Mode[], char BP_Type[])
+byte BPLib::begin(char BP_Mode[], char BP_Type[])
 {
   serialInterface->print(BP_MODE_COMMAND);
   if (get(BP_STAT_CMD, (byte)5) != 1)
@@ -55,7 +55,7 @@ byte BPLib_::begin(char BP_Mode[], char BP_Type[])
   return (byte)1;
 }
 
-byte BPLib_::sendCmd(char BP_CMD[])
+byte BPLib::sendCmd(char BP_CMD[])
 {
   serialInterface->print(BP_MODE_COMMAND);
   if (get(BP_STAT_CMD, (byte)5) != 1)
@@ -75,16 +75,16 @@ byte BPLib_::sendCmd(char BP_CMD[])
   return (byte)1;
 }
 
-byte BPLib_::readRaw()
+byte BPLib::readRaw()
 {
   return serialInterface->read();
 }
-int BPLib_::available()
+int BPLib::available()
 {
   return serialInterface->available();
 }
 
-byte BPLib_::get(char BP_STAT[], byte strlen)
+byte BPLib::get(char BP_STAT[], byte strlen)
 {
   char buffer[strlen + 1];
   while (serialInterface->available() <= (strlen - 1))
@@ -116,7 +116,7 @@ byte BPLib_::get(char BP_STAT[], byte strlen)
   Following are the modified functions that both press and release a specific key while
   also taking care of modifiers
 */
-void BPLib_::keyboardPress(byte BP_KEY, byte BP_MOD)
+void BPLib::keyboardPress(byte BP_KEY, byte BP_MOD)
 {
   //Add the modifier keys by applying bitwise OR
   uint8_t modifiers = (_keyReport.mods | BP_MOD);
@@ -135,7 +135,7 @@ void BPLib_::keyboardPress(byte BP_KEY, byte BP_MOD)
   }
 }
 
-void BPLib_::keyboardRelease(byte BP_KEY, byte BP_MOD)
+void BPLib::keyboardRelease(byte BP_KEY, byte BP_MOD)
 {
   //Remove the modifier by subtraction
   uint8_t modifiers = (_keyReport.mods - BP_MOD);
@@ -154,17 +154,17 @@ void BPLib_::keyboardRelease(byte BP_KEY, byte BP_MOD)
   }
 }
 
-void BPLib_::keyboardReleaseAll()
+void BPLib::keyboardReleaseAll()
 {
   keyboardPress((byte)0x00, BP_MOD_NOMOD);
 }
 
-void BPLib_::mouseClick(byte BP_BUTTON)
+void BPLib::mouseClick(byte BP_BUTTON)
 {
   mousePress(BP_BUTTON);
   mouseReleaseAll();
 }
-void BPLib_::mouseMove(signed int BP_X, signed int BP_Y)
+void BPLib::mouseMove(signed int BP_X, signed int BP_Y)
 {
   serialInterface->write((byte)0xFD); //Start HID Report
   serialInterface->write((byte)0x5);  //Length byte
@@ -174,7 +174,7 @@ void BPLib_::mouseMove(signed int BP_X, signed int BP_Y)
   serialInterface->write(BP_Y);       //(-127 to 127)
   serialInterface->write((byte)0x00);
 }
-void BPLib_::mousePress(byte BP_BUTTON)
+void BPLib::mousePress(byte BP_BUTTON)
 {
   serialInterface->write((byte)0xFD); //Start HID Report
   serialInterface->write((byte)0x5);  //Length byte
@@ -186,7 +186,7 @@ void BPLib_::mousePress(byte BP_BUTTON)
   }
 }
 
-void BPLib_::mouseReleaseAll()
+void BPLib::mouseReleaseAll()
 {
   serialInterface->write((byte)0xFD); //Start HID Report
   serialInterface->write((byte)0x5);  //Length byte
@@ -197,7 +197,7 @@ void BPLib_::mouseReleaseAll()
   }
 }
 
-void BPLib_::mouseWheel(signed int BP_WHEEL)
+void BPLib::mouseWheel(signed int BP_WHEEL)
 {
   serialInterface->write((byte)0xFD); //Start HID Report
   serialInterface->write((byte)0x5);  //Length byte
@@ -209,57 +209,57 @@ void BPLib_::mouseWheel(signed int BP_WHEEL)
   serialInterface->write(BP_WHEEL); //Wheel byte (-127 to 127)
 }
 
-void BPLib_::volumeUp()
+void BPLib::volumeUp()
 {
   sendConsumerCommand((byte)0x10, (byte)0x00);
 }
 
-void BPLib_::volumeDown()
+void BPLib::volumeDown()
 {
   sendConsumerCommand((byte)0x20, (byte)0x00);
 }
 
-void BPLib_::muteAudio()
+void BPLib::muteAudio()
 {
   sendConsumerCommand((byte)0x40, (byte)0x00);
 }
 
-void BPLib_::playPause()
+void BPLib::playPause()
 {
   sendConsumerCommand((byte)0x80, (byte)0x00);
 }
 
-void BPLib_::nextTrack()
+void BPLib::nextTrack()
 {
   sendConsumerCommand((byte)0x00, (byte)0x01);
 }
 
-void BPLib_::prevTrack()
+void BPLib::prevTrack()
 {
   sendConsumerCommand((byte)0x00, (byte)0x02);
 }
 
-void BPLib_::stopAudio()
+void BPLib::stopAudio()
 {
   sendConsumerCommand((byte)0x00, (byte)0x04);
 }
 
-void BPLib_::fastForwardAudio()
+void BPLib::fastForwardAudio()
 {
   sendConsumerCommand((byte)0x00, (byte)0x10);
 }
 
-void BPLib_::rewindAudio()
+void BPLib::rewindAudio()
 {
   sendConsumerCommand((byte)0x00, (byte)0x20);
 }
 
-void BPLib_::keyRelease()
+void BPLib::keyRelease()
 {
   sendConsumerCommand((byte)0x00, (byte)0x00);
 }
 
-void BPLib_::sendConsumerCommand(byte lowByte, byte highByte)
+void BPLib::sendConsumerCommand(byte lowByte, byte highByte)
 {
   serialInterface->write((byte)0xFD); //Start HID Report
   serialInterface->write((byte)0x3);  //Length byte
@@ -268,7 +268,7 @@ void BPLib_::sendConsumerCommand(byte lowByte, byte highByte)
   serialInterface->write(highByte);   //Key Release HighByte
 }
 
-byte BPLib_::changeName(char BP_NAME[])
+byte BPLib::changeName(char BP_NAME[])
 {
   serialInterface->print(BP_MODE_COMMAND);
   if (get(BP_STAT_CMD, (byte)5) != 1)
@@ -290,32 +290,32 @@ byte BPLib_::changeName(char BP_NAME[])
   return (byte)1;
 }
 
-void BPLib_::sendByte(byte rawData)
+void BPLib::sendByte(byte rawData)
 {
   serialInterface->print(rawData);
 }
-void BPLib_::sendChar(char rawData)
+void BPLib::sendChar(char rawData)
 {
   serialInterface->print(rawData);
 }
-void BPLib_::sendInt(int rawData)
+void BPLib::sendInt(int rawData)
 {
   serialInterface->print(rawData);
 }
-void BPLib_::sendFloat(float rawData)
+void BPLib::sendFloat(float rawData)
 {
   serialInterface->print(rawData);
 }
-void BPLib_::sendLong(long rawData)
+void BPLib::sendLong(long rawData)
 {
   serialInterface->print(rawData);
 }
-void BPLib_::sendString(char rawData[])
+void BPLib::sendString(char rawData[])
 {
   serialInterface->print(rawData);
 }
 
-void BPLib_::gameJoyPress(byte BP_ST_BTN, byte BP_ND_BTN)
+void BPLib::gameJoyPress(byte BP_ST_BTN, byte BP_ND_BTN)
 {
   serialInterface->write((byte)0xFD);      //Start HID Report
   serialInterface->write((byte)0x6);       //Length byte
@@ -326,7 +326,7 @@ void BPLib_::gameJoyPress(byte BP_ST_BTN, byte BP_ND_BTN)
     serialInterface->write((byte)0x00);
   }
 }
-void BPLib_::gameJoyMove(signed int BP_X1, signed int BP_Y1, signed int BP_X2, signed int BP_Y2)
+void BPLib::gameJoyMove(signed int BP_X1, signed int BP_Y1, signed int BP_X2, signed int BP_Y2)
 {
   serialInterface->write((byte)0xFD);                //Start HID Report
   serialInterface->write((byte)0x6);                 //Length byte
@@ -337,12 +337,12 @@ void BPLib_::gameJoyMove(signed int BP_X1, signed int BP_Y1, signed int BP_X2, s
   serialInterface->write(BP_X2 & 0xFF);              //Second X coordinate
   serialInterface->write(BP_Y2 & 0xFF);              //Second Y coordinate
 }
-void BPLib_::gameJoyReleaseAll()
+void BPLib::gameJoyReleaseAll()
 {
   gameJoyPress(BP_GAMEJOY_ST_NOBTN, BP_GAMEJOY_ND_NOBTN);
 }
 
-int BPLib_::connected()
+int BPLib::connected()
 {
   if (statusPin > -1)
   {
@@ -354,7 +354,7 @@ int BPLib_::connected()
   }
 }
 
-int BPLib_::isKeyPressed(byte BP_KEY)
+int BPLib::isKeyPressed(byte BP_KEY)
 {
   for (int i = 0; i < 6; i++)
   {
@@ -368,7 +368,7 @@ int BPLib_::isKeyPressed(byte BP_KEY)
   return -1;
 }
 
-void BPLib_::addKeyPress(byte BP_KEY)
+void BPLib::addKeyPress(byte BP_KEY)
 {
   if (isKeyPressed(BP_KEY) > -1)
   {
@@ -384,7 +384,7 @@ void BPLib_::addKeyPress(byte BP_KEY)
   }
 }
 
-void BPLib_::removeKeyPress(byte BP_KEY)
+void BPLib::removeKeyPress(byte BP_KEY)
 {
   //Retrieve position
   int keyPosition = isKeyPressed(BP_KEY);
@@ -395,4 +395,3 @@ void BPLib_::removeKeyPress(byte BP_KEY)
   }
 }
 
-BPLib_ BPLib;
