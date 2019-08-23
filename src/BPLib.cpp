@@ -170,7 +170,7 @@ void BPLib::keyboardReleaseAll()
   //Zero out ever key
   for (int i = 0; i < 6; i++)
   {
-    serialInterface->write((byte)0x00));
+    serialInterface->write((byte)0x00);
   }
 }
 
