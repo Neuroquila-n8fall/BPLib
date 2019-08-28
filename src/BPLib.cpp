@@ -22,6 +22,11 @@ BPLib::BPLib(Stream &port, int pin)
   {
     statusPin = pin;
   }
+  for (int i = 0; i < 6; i++)
+  {
+    _keyReport.keys[i] = 0x0;
+  }
+  _keyReport.mods = 0x0;
 }
 
 byte BPLib::begin(char BP_Mode[], char BP_Type[])
@@ -128,10 +133,10 @@ void BPLib::keyboardPress(byte BP_KEY, byte BP_MOD)
   serialInterface->write((byte)0x1);  //Descriptor byte
   serialInterface->write(modifiers);  //Modifier byte
   serialInterface->write((byte)0x00); //Empty
-  //Now let's cycle through the stored keyreport to press keys
+  //Now let's cycle through the stored keyreport to PRESS and HOLD keys
   for (int i = 0; i < 6; i++)
   {
-    serialInterface->write(_keyReport.keys[i]);
+    serialInterface->write((byte)_keyReport.keys[i]);
   }
 }
 
@@ -147,16 +152,17 @@ void BPLib::keyboardRelease(byte BP_KEY, byte BP_MOD)
   serialInterface->write((byte)0x1);  //Descriptor byte
   serialInterface->write(modifiers);  //Modifier byte
   serialInterface->write((byte)0x00); //Empty
-  //Now let's cycle through the stored keyreport to press keys
+  //Now let's cycle through the stored keyreport to RELEASE keys
   for (int i = 0; i < 6; i++)
   {
-    serialInterface->write(_keyReport.keys[i]);
+    serialInterface->write((byte)_keyReport.keys[i]);
   }
 }
 
 void BPLib::keyboardPressOnce(byte BP_KEY, byte BP_MOD)
 {
   keyboardPress(BP_KEY, BP_MOD);
+  delay(10); //Might be helpful on slow systems.
   keyboardRelease(BP_KEY, BP_MOD);
 }
 
@@ -385,7 +391,7 @@ int BPLib::isKeyPressed(byte BP_KEY)
 
 void BPLib::addKeyPress(byte BP_KEY)
 {
-  if (isKeyPressed(BP_KEY) > -1)
+  if (isKeyPressed(BP_KEY) < 0)
   {
     for (int i = 0; i < 6; i++)
     {
@@ -394,6 +400,7 @@ void BPLib::addKeyPress(byte BP_KEY)
       {
         //Insert key
         _keyReport.keys[i] = BP_KEY;
+        break;
       }
     }
   }
